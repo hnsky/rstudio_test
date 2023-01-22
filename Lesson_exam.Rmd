@@ -1,0 +1,47 @@
+---
+title: "Lesson_exam"
+output: html_document
+date: "2023-01-22"
+---
+
+```{r}
+install.packages("tidyverse")
+```
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+flavors_df <- read_csv("flavors_of_cacao.csv")
+head(flavors_df)
+```
+
+```{r}
+trimmed_flavors_df <- flavors_df %>% select(Rating, CocoaPercent, Company, CompanyLocation)
+trimmed_flavors_df %>% summarize(sd =sd(Rating))
+```
+
+```{r}
+best_trimmed_flavors_df <- trimmed_flavors_df %>% filter(CocoaPercent >= 75, Rating >= 3.9)
+head(best_trimmed_flavors_df)
+```
+```{r}
+ggplot(data = best_trimmed_flavors_df) + geom_bar(mapping = aes(x= Company))
+```
+
+```{r}
+ggplot(data = best_trimmed_flavors_df) +geom_bar(mapping = aes(x = CompanyLocation))
+```
+
+France、U.S.A. 
+
+```{r}
+ggplot(data = best_trimmed_flavors_df) + geom_bar(mapping = aes(x = Company)) +facet_wrap(~Company)
+```
+
+```{r}
+ggplot(data = trimmed_flavors_df) + geom_point(mapping = aes(x = CocoaPercent, y = Rating)) + labs(title = "Suggested Chocolate")
+```
+

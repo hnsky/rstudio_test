@@ -1,0 +1,96 @@
+---
+title: "Lesson_Clean"
+output: html_document
+date: "2023-01-22"
+---
+
+
+## 背景
+
+このアクティビティでは、シナリオを確認し、Rで実際のデータをクリーニングすることに焦点を当てます。データクリーニング関数について詳しく学び、データの最初のインサイトを得るために基本的な計算を実行します。
+
+このアクティビティでは、コードの塊に自分で変更を加えることで、自分自身のコードを書く練習をする機会もあります。エラーが発生したり、行き詰まったりした場合は、Week 3 の Solutions フォルダにある Lesson2_Clean_Solutions .rmd ファイルで、いつでも完全で正しいコードを確認することができます。
+
+## シナリオ
+
+あなたはホテル予約会社に勤める若手データアナリストです。あなたは、異なるホテルの異なる2つのテーブルを結合するためにデータベースに照会後に作成された .csvファイルをクリーニングするよう依頼されました。
+このデータについて詳しく知るには、関数を使用して、列や行を含むデータの構造をプレビューする必要があります。また、基本的なクリーンアップ関数を使用して、このデータを分析するための準備をする必要があります。 
+
+## ステップ1：パッケージのロード
+
+データクリーニングを開始するために、必要なパッケージをインストールする必要があります。もし、このセッションですでに `tidyverse`, `skimr`, `janitor` をインストールして読み込んでいるなら、このステップのコードチャンクは読み飛ばしていただいて結構です。
+
+```{r}
+install.packages("tidyverse")
+install.packages("skimr")
+install.packages("janitor")
+```
+
+```{r}
+library(tidyverse)
+library(skimr)
+library(janitor)
+```
+
+```{r}
+bookings_df <- read_csv("hotel_bookings.csv")
+```
+
+
+
+```{r}
+head(bookings_df)
+```
+
+
+```{r}
+str(bookings_df)
+```
+
+```{r}
+glimpse(bookings_df)
+```
+
+```{r}
+colnames(bookings_df)
+```
+```{r}
+skim_without_charts(bookings_df)
+```
+
+```{r}
+trimmed_df <- bookings_df %>% 
+  select(hotel, is_canceled, lead_time, )
+```
+
+```{r}
+head(trimmed_df)
+```
+
+
+```{r}
+trimmed_df %>% 
+  select(hotel, is_canceled, lead_time) %>% 
+  rename(hotel_type = hotel)
+```
+```{r}
+example_df <- bookings_df %>%
+  select(arrival_date_year, arrival_date_month) %>% 
+  unite(arrival_month_year, c("arrival_date_month", "arrival_date_year"), sep = " ")
+```
+
+
+```{r}
+example_df <- bookings_df %>%
+  mutate(guests = adults + children + babies)
+
+head(example_df)
+```
+```{r}
+
+example_df <- bookings_df %>%
+  summarize(number_canceld= sum(is_canceled), averagge_lead_time = mean(lead_time))	
+
+head(example_df)
+```
+

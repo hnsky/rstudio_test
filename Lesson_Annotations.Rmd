@@ -1,0 +1,85 @@
+---
+title: "Lesson_Annotations"
+output: html_document
+date: "2023-01-22"
+---
+
+```{r load data}
+hotel_bookings <- read.csv("hotel_bookings.csv")
+```
+
+
+```{r look at data}
+head(hotel_bookings)
+colnames(hotel_bookings)
+```
+
+
+```{r loading and installing ggplot2, echo=FALSE, message=FALSE}
+install.packages('ggplot2')
+library(ggplot2)
+```
+
+```{r install and download tidyverse}
+install.packages('tidyverse')
+library(tidyverse)
+```
+```{r faceting a plot}
+ggplot(data = hotel_bookings) +
+  geom_bar(mapping = aes(x = market_segment)) +
+  facet_wrap(~hotel)
+```
+```{r faceting a plot with a title}
+ggplot(data = hotel_bookings) +
+  geom_bar(mapping = aes(x = market_segment)) +
+  facet_wrap(~hotel) +
+  labs(title="")
+```
+```{r latest date}
+mindate <- min(hotel_bookings$arrival_date_year)
+maxdate <- max(hotel_bookings$arrival_date_year)
+```
+
+
+```{r city bar chart with timeframe}
+ggplot(data = hotel_bookings) +
+  geom_bar(mapping = aes(x = market_segment)) +
+  facet_wrap(~hotel) +
+  theme(axis.text.x = element_text(angle = 45)) +
+  labs(title="Comparison of market segments by hotel type for hotel bookings",
+       subtitle=paste0("Data from: ", mindate, " to ", maxdate))
+```
+
+
+```{r city bar chart with timeframe as caption}
+ggplot(data = hotel_bookings) +
+  geom_bar(mapping = aes(x = market_segment)) +
+  facet_wrap(~hotel) +
+  theme(axis.text.x = element_text(angle = 45)) +
+  labs(title="Comparison of market segments by hotel type for hotel bookings",
+       caption=paste0("Data from: ", mindate, " to ", maxdate))
+```
+
+
+```{r city bar chart with x and y axis}
+ggplot(data = hotel_bookings) +
+  geom_bar(mapping = aes(x = market_segment)) +
+  facet_wrap(~hotel) +
+  theme(axis.text.x = element_text(angle = 45)) +
+  labs(title="Comparison of market segments by hotel type for hotel bookings",
+       caption=paste0("Data from: ", mindate, " to ", maxdate),
+       x="Market Segment",
+       y="Number of Bookings")
+```
+
+
+
+```{r save your plot}
+ggsave('hotel_booking_chart.png', width=7,
+       height=7)
+```
+
+
+
+
+
